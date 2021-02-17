@@ -12,3 +12,14 @@ GString *g_string_new(gchar const *str) {
 	strncpy(ret->str, str,strlen(str));
 	return ret;
 };
+
+gchar *g_string_free(GString *str, gboolean free_segment) {
+	gchar *ret = str->str;
+	free(str);
+	if (free_segment) {
+		free(ret);
+		return NULL;
+	} else {
+		return ret;
+	}
+};

@@ -4,5 +4,7 @@
 typedef char gchar;
 typedef unsigned char guchar;
 typedef unsigned long gsize;
+typedef int gint;
+typedef gint gboolean;
 
 #endif
