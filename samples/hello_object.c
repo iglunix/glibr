@@ -11,6 +11,7 @@ G_END_DECLS
 
 struct _HelloGreeting {
 	GObject parent_instance;
+	gchar *msg;
 };
 
 
@@ -22,4 +23,8 @@ static void hello_greeting_class_init(HelloGreetingClass *klass) {
 
 static void hello_greeting_init (HelloGreeting *self) {
 
+}
+
+int main() {
+	g_object_new(HELLO_TYPE_GREETING, NULL);
 }
