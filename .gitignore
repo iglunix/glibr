@@ -1,6 +1,5 @@
 *.o
 *.so
 *.ccls-cache
-samples/hello
-samples/a.out
+*.sample
 compile_commands.json
