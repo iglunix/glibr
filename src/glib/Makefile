@@ -11,5 +11,5 @@ gmessages.o: ../../include/glib/gmessages.h ../../include/glib/gtypes.h
 glist.o: ../../include/glib/glist.h ../../include/glib/gtypes.h
 	$(CC) -I../../include/ -fPIC -c $(CFLAGS) -o glist.o glist.c
 clean:
-	rm *.o
-	rm *.so
+	rm *.o 2>/dev/null || exit 0
+	rm *.so 2>/dev/null || exit 0
