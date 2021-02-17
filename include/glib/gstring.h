@@ -7,4 +7,8 @@ typedef struct _GString {
 	gsize len;
 	gsize allocated_len;
 } GString;
+
+GString *g_string_new(gchar const *str);
+gchar *g_string_free(GString *str, gboolean free_int);
+
 #endif

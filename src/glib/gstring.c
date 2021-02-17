@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gtypes.h"
-#include "gstring.h"
+#include <glib/gtypes.h>
+#include <glib/gstring.h>
 
 GString *g_string_new(gchar const *str) {
 	GString *ret = malloc(sizeof(ret));

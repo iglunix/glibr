@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include "gtypes.h"
+#include <glib/gtypes.h>
+#include <glib/gmessages.h>
 
 void g_print(gchar const *fmt, ...) {
 	va_list va;

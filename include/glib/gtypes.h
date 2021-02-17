@@ -6,5 +6,6 @@ typedef unsigned char guchar;
 typedef unsigned long gsize;
 typedef int gint;
 typedef gint gboolean;
+typedef void* gpointer;
 
 #endif

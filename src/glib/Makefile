@@ -2,9 +2,14 @@
 .SUFFIXES:
 CC=c99
 all: glib.so
-glib.so: gstring.o gmessages.o
-	$(CC) $(LDFLAGS) -shared -o glib.so gstring.o gmessages.o
-gstring.o: gstring.h gtypes.h
-	$(CC) -fPIC -c $(CFLAGS) -o gstring.o gstring.c
-gmessages.o: gmessages.h gtypes.h
-	$(CC) -fPIC -c $(CFLAGS) -o gmessages.o gmessages.c
+glib.so: gstring.o gmessages.o glist.o
+	$(CC) $(LDFLAGS) -shared -o glib.so gstring.o gmessages.o glist.o
+gstring.o: ../../include/glib/gstring.h ../../include/glib/gtypes.h
+	$(CC) -I../../include/ -fPIC -c $(CFLAGS) -o gstring.o gstring.c
+gmessages.o: ../../include/glib/gmessages.h ../../include/glib/gtypes.h
+	$(CC) -I../../include/ -fPIC -c $(CFLAGS) -o gmessages.o gmessages.c
+glist.o: ../../include/glib/glist.h ../../include/glib/gtypes.h
+	$(CC) -I../../include/ -fPIC -c $(CFLAGS) -o glist.o glist.c
+clean:
+	rm *.o
+	rm *.so

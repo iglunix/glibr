@@ -2,3 +2,5 @@
 *.so
 *.ccls-cache
 samples/hello
+samples/a.out
+compile_commands.json
