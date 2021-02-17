@@ -9,6 +9,7 @@ typedef struct _GString {
 } GString;
 
 GString *g_string_new(gchar const *str);
+GString *g_string_new_len(gchar const *str, gssize);
 gchar *g_string_free(GString *str, gboolean free_int);
 
 #endif

@@ -6,10 +6,15 @@
 
 GString *g_string_new(gchar const *str) {
 	GString *ret = malloc(sizeof(GString));
-	ret->len=strlen(str);
-	ret->str=malloc(ret->len+1);
+	if (str) {
+		ret->len=strlen(str);
+		ret->str=malloc(ret->len+1);
+		strncpy(ret->str, str,strlen(str));
+	} else {
+		ret->len=0;
+		ret->str=NULL;
+	}
 	ret->allocated_len=ret->len;
-	strncpy(ret->str, str,strlen(str));
 	return ret;
 };
 
