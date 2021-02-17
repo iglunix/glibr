@@ -5,7 +5,7 @@
 #include <glib/gstring.h>
 
 GString *g_string_new(gchar const *str) {
-	GString *ret = malloc(sizeof(ret));
+	GString *ret = malloc(sizeof(GString));
 	ret->len=strlen(str);
 	ret->str=malloc(ret->len+1);
 	ret->allocated_len=ret->len;

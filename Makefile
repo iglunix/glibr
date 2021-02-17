@@ -3,11 +3,11 @@
 all: glib
 
 glib:
-	make -C src/glib
+	$(MAKE) -C src/glib
 
 test:
-	make -C samples
+	$(MAKE) -C samples
 
 clean:
-	make -C samples clean
-	make -C src/glib clean
+	$(MAKE) -C samples clean
+	$(MAKE) -C src/glib clean

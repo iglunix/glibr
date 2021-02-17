@@ -2,7 +2,7 @@
 #include <glib/glist.h>
 
 GList *g_list_append (GList *list, gpointer data) {
-	GList *ret = malloc(sizeof(ret));
+	GList *ret = malloc(sizeof(GList));
 	ret->data = data;
 	ret->prev = list;
 	ret->next = 0;
