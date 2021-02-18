@@ -11,20 +11,22 @@ G_END_DECLS
 
 struct _HelloGreeting {
 	GObject parent_instance;
-	gchar *msg;
+	char const *msg;
 };
 
 
 G_DEFINE_TYPE (HelloGreeting, hello_greeting, G_TYPE_OBJECT)
 
 static void hello_greeting_class_init(HelloGreetingClass *klass) {
-
+	g_print("Class, Init!\n");
 }
 
 static void hello_greeting_init (HelloGreeting *self) {
-
+	g_print("Object, Init!\n");
+	self->msg = "Hello, World!\n";
 }
 
 int main() {
-	g_object_new(HELLO_TYPE_GREETING, NULL);
+	g_print(((HelloGreeting *) g_object_new(HELLO_TYPE_GREETING, NULL))->msg);
+	g_print(((HelloGreeting *) g_object_new(HELLO_TYPE_GREETING, NULL))->msg);
 }
