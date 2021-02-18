@@ -1,6 +1,8 @@
 #ifndef __G_TYPES_H__
 #define __G_TYPES_H__
 
+#include <glibconfig.h>
+
 typedef float gfloat;
 typedef double gdouble;
 

@@ -4,5 +4,6 @@
 #include <glib.h>
 #include <gobject/gobject.h>
 #include <gobject/gtype.h>
+#include <gobject/gvalue.h>
 
 #endif

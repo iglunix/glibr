@@ -6,5 +6,7 @@
 #include <glib/gmessages.h>
 #include <glib/gstring.h>
 #include <glib/gtypes.h>
+#include <glib/gtestutils.h>
+#include <glibconfig.h>
 
 #endif

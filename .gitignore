@@ -2,4 +2,5 @@
 *.so
 *.ccls-cache
 *.sample
+tainted
 compile_commands.json
