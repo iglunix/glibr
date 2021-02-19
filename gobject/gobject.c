@@ -45,6 +45,8 @@ GType g_object_get_type() {
 	ret.size = sizeof(GObject);
 	ret.class_init = g_object_class_init;
 	ret.klass = (gpointer) &g_object_class;
+	g_object_class.constructor = g_object_constructor;
+	g_object_class.init = g_object_init;
 	/*
          * Must be more than just an object
          * so don't need to keep track of
