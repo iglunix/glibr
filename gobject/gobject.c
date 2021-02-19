@@ -33,12 +33,24 @@ void g_object_init(GObject *self) {
 }
 
 /*
+ * The global gobject class
+ */
+static GObjectClass g_object_class;
+
+/*
  * Get type information about GObject
  */
 GType g_object_get_type() {
 	GType ret;
-
-
+	ret.size = sizeof(GObject);
+	ret.class_init = g_object_class_init;
+	ret.klass = (gpointer) &g_object_class;
+	/*
+         * Must be more than just an object
+         * so don't need to keep track of
+         * class init
+         */
+	ret.done_class_init = NULL;
 
 	return ret;
 }
