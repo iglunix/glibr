@@ -4,12 +4,12 @@
 GObject *g_object_new(GType type, gchar const *names, ...) {
 	GObject *ret = malloc(type.size);
 	if (!*type.done_class_init) {
-/*		type.klass->constructor = NULL;*/
+		((GObjectClass *)type.klass)->constructor = NULL;
 		type.class_init(type.klass);
 		*type.done_class_init=TRUE;
 	}
-/*	if (type.klass->constructor) type.klass->constructor();*/
 	type.init(ret);
+	if (((GObjectClass *)type.klass)->constructor) ((GObjectClass *)type.klass)->constructor();
 	return ret;
 }
 
