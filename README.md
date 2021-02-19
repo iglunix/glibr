@@ -14,7 +14,7 @@ in a single header file.
 /*
  * TCO - Tiny C Objects
  *
- * Copyright (C) 2020 by Ella-0
+ * Copyright (C) 2021 by Ella-0
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted.
