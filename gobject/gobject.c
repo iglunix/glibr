@@ -1,5 +1,47 @@
 #include <stdlib.h>
+#include <gobject/gtype.h>
 #include <gobject/gobject.h>
+
+/* GObject constructor
+ */
+GObject *g_object_constructor(GType type, guint prop_count, GObjectConstructParam *construct_params) {
+	GObject *ret;
+	/*
+         * TODO: g_type_create_instance(type)
+         */
+	ret = (GObject *) malloc(type.size);
+	/*
+         * TODO: handle constructor params
+         */
+	return ret;
+}
+
+
+/*
+ * Initialser for ever gobject class
+ */
+void g_object_class_init(GObjectClass *self) {
+	self->constructor = g_object_constructor;
+}
+
+
+/*
+ * The initialiser for every object
+ */
+void g_object_init(GObject *self) {
+
+}
+
+/*
+ * Get type information about GObject
+ */
+GType g_object_get_type() {
+	GType ret;
+
+
+
+	return ret;
+}
 
 GObject *g_object_new(GType type, gchar const *names, ...) {
 	GObject *ret = malloc(type.size);
@@ -8,8 +50,8 @@ GObject *g_object_new(GType type, gchar const *names, ...) {
 		type.class_init(type.klass);
 		*type.done_class_init=TRUE;
 	}
-	type.init(ret);
-	if (((GObjectClass *)type.klass)->constructor) ((GObjectClass *)type.klass)->constructor();
+	((GObjectClass *)type.klass)->init(ret);
+	if (((GObjectClass *)type.klass)->constructor) ((GObjectClass *)type.klass)->constructor(type, 0, NULL);
 	return ret;
 }
 

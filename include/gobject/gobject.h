@@ -8,13 +8,22 @@ typedef struct _GObject {
 	volatile unsigned int ref_count;
 } GObject;
 
-typedef struct _GObjectClass {
-	GObject *(*constructor)(/* TODO */);
-} GObjectClass;
-
 typedef struct _GObjectConstructParam {
 	GValue *value;
 } GObjectConstructParam;
+
+typedef struct _GObjectClass {
+	/*
+         * Function for allocating a GObject
+         */
+	gpointer (*constructor)(GType, guint, GObjectConstructParam *);
+	/*
+         * Function for initialising a GObject
+         */
+	void (*init)(gpointer);
+} GObjectClass;
+
+
 
 /*
  * TODO
