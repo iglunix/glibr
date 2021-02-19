@@ -11,6 +11,23 @@ could be implemented. The following is a much simpler object library
 in a single header file.
 
 ```c
+/*
+ * TCO - Tiny C Objects
+ *
+ * Copyright (C) 2020 by Ella-0
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -101,4 +118,63 @@ Object *object_new_ref(Object *object) {
 #define END_DEL }; return __ref_count; }
 
 #define MALLOC_OBJECT(OBJ_NAME,var_name) OBJ_NAME##_TYPE *var_name = malloc(sizeof(OBJ_NAME##_TYPE));
+```
+
+The following is an example use of this header.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include <string.h>
+#include "tco.h"
+
+/* 
+ * Public information that should go in header file
+ */
+
+BEGIN_CLASS_DECL
+	#define TEST_CLASS_TYPE TestClass
+	#define TEST_CLASS_PREFIX test_class
+	#define TEST_CLASS_SUPER OBJECT_TYPE
+	#define TEST_CLASS_SUPER_PREFIX OBJECT_PREFIX
+END_CLASS_DECL(TEST_CLASS)
+
+METHOD_DECL(TEST_CLASS,void,new,char *greeting)
+
+/*
+ * Private information for source file
+ */
+
+BEGIN_CLASS(TEST_CLASS)
+	char *greeting;
+END_CLASS
+
+BEGIN_METHOD(TEST_CLASS,void,new,char *greeting)
+	object_new(super);
+	self->greeting = greeting;
+END_METHOD
+
+BEGIN_DEL(TEST_CLASS)
+	free(self->greeting);
+	puts("deleted");
+END_DEL
+
+int main() {
+	MALLOC_OBJECT(TEST_CLASS,test_obj);
+
+	test_class_new(test_obj, strdup("Hello, World!"));
+
+	printf("%s\n", test_obj->greeting);
+
+	TestClass *new_ref = NEW_REF(TEST_CLASS,test_obj);
+
+	HEAP_DEL(TEST_CLASS, test_obj);
+
+	printf("%s\n", new_ref->greeting);
+
+	HEAP_DEL(TEST_CLASS, new_ref);
+
+	return 0;
+}
 ```
