@@ -5,6 +5,7 @@
 /* GObject constructor
  */
 GObject *g_object_constructor(GType type, guint prop_count, GObjectConstructParam *construct_params) {
+	puts("Parent Constructor");
 	GObject *ret;
 	/*
          * TODO: g_type_create_instance(type)
@@ -13,6 +14,7 @@ GObject *g_object_constructor(GType type, guint prop_count, GObjectConstructPara
 	/*
          * TODO: handle constructor params
          */
+	type.init(ret);
 	return ret;
 }
 
@@ -21,6 +23,7 @@ GObject *g_object_constructor(GType type, guint prop_count, GObjectConstructPara
  * Initialser for ever gobject class
  */
 void g_object_class_init(GObjectClass *self) {
+	puts("Parent Class Init");
 	self->constructor = g_object_constructor;
 }
 
@@ -29,7 +32,7 @@ void g_object_class_init(GObjectClass *self) {
  * The initialiser for every object
  */
 void g_object_init(GObject *self) {
-
+	puts("Parent Init");
 }
 
 /*
@@ -43,10 +46,10 @@ static GObjectClass g_object_class;
 GType g_object_get_type() {
 	GType ret;
 	ret.size = sizeof(GObject);
-	ret.class_init = g_object_class_init;
+	ret.class_init = (void (*)(gpointer)) g_object_class_init;
 	ret.klass = (gpointer) &g_object_class;
-	g_object_class.constructor = g_object_constructor;
-	g_object_class.init = g_object_init;
+	G_OBJECT_CLASS(ret.klass)->constructor = &g_object_constructor;
+	ret.init = g_object_init;
 	/*
          * Must be more than just an object
          * so don't need to keep track of
@@ -64,8 +67,8 @@ GObject *g_object_new(GType type, gchar const *names, ...) {
 		type.class_init(type.klass);
 		*type.done_class_init=TRUE;
 	}
-	((GObjectClass *)type.klass)->init(ret);
-	if (((GObjectClass *)type.klass)->constructor) ((GObjectClass *)type.klass)->constructor(type, 0, NULL);
+	ret = ((GObjectClass *)type.klass)->constructor(type, 0, NULL);
+	// type.init(ret);
 	return ret;
 }
 

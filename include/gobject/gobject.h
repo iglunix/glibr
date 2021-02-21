@@ -15,12 +15,10 @@ typedef struct _GObjectConstructParam {
 typedef struct _GObjectClass {
 	/*
          * Function for allocating a GObject
+         * 
+         * is this needed?
          */
 	gpointer (*constructor)(GType, guint, GObjectConstructParam *);
-	/*
-         * Function for initialising a GObject
-         */
-	void (*init)(gpointer);
 } GObjectClass;
 
 
