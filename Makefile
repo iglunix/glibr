@@ -51,7 +51,9 @@ gobject.o: include/gobject/gobject.h gobject/gobject.c
 
 
 install:
-	mkdir -p $(DESTDIR)/$(INCLUDEDIR)/glibr $(DESTDIR)/$(LIBDIR)
+	mkdir -p $(DESTDIR)/$(INCLUDEDIR)/glibr $(DESTDIR)/$(LIBDIR)/pkgconfig
 	cp -rf include/* $(DESTDIR)/$(INCLUDEDIR)/glibr
 	cp libglib.so $(DESTDIR)/$(LIBDIR)
 	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libglib.so.1
+	sed 's|prefix=/usr|prefix=$(PREFIX)|g' glibr.pc > $(DESTDIR)/$(LIBDIR)/pkgconfig/glibr.pc
+	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/glib-2.0.pc
