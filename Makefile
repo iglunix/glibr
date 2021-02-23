@@ -57,3 +57,4 @@ install:
 	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libglib.so.1
 	sed 's|prefix=/usr|prefix=$(PREFIX)|g' glibr.pc > $(DESTDIR)/$(LIBDIR)/pkgconfig/glibr.pc
 	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/glib-2.0.pc
+	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/gobject-2.0.pc
