@@ -10,6 +10,9 @@ typedef struct _GString {
 
 GString *g_string_new(gchar const *str);
 GString *g_string_new_len(gchar const *str, gssize);
+GString *g_string_sized_new(gssize);
+GString *g_string_vprintf(GString *self, gchar const *fmt, va_list);
+GString *g_string_assign(GString *lhs, gchar const *rhs);
 gchar *g_string_free(GString *str, gboolean free_int);
 
 #endif

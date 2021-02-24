@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
 
 #include <glib/gtypes.h>
 #include <glib/gstring.h>
@@ -20,7 +22,7 @@ GString *g_string_new(gchar const *str) {
 
 GString *g_string_new_len(gchar const *str, gssize len) {
 	if (!str) {
-		return NULL
+		return NULL;
 	}
 	GString *ret = malloc(sizeof(GString));
 	ret->len = len;
@@ -40,19 +42,28 @@ GString *g_string_sized_new(gssize size) {
 }
 
 GString *g_string_assign(GString *string, gchar const *src) {
-	if (ret->allocated_len < strlen(src)) {
-		ret->allocated_len = strlen(src);
-		ret->str = realloc(ret->str, strlen(src) + 1);
+	if (string->allocated_len < strlen(src)) {
+		string->allocated_len = strlen(src);
+		string->str = realloc(string->str, strlen(src) + 1);
 	}
-	ret->len = strlen(src);
-	strncpy(ret->str, str, ret->len);
+	string->len = strlen(src);
+	strncpy(string->str, src, string->len);
+	return string;
+}
+
+GString *g_string_vprintf(GString *string, gchar const *fmt, va_list args) {
+	free(string->str);
+	string->len = vasprintf(&string->str, fmt, args);
+	string->allocated_len = string->len;
+	return string;
 }
 
 /*
- * TODO: expand string?
+ * TODO: actually append?
  */
-GString *g_string_vprintf(GString *string, gchar const *fmt, va_list args) {
-	vsprintf(string->str, fmt, args);
+GString *g_string_append_vprintf(GString *string, gchar const *fmt, va_list args) {
+	gchar *to_append;
+	vasprintf(&to_append, fmt, args);
 	return string;
 }
 
