@@ -143,27 +143,28 @@ GType g_object_get_type();
 	//TODO AUTOPTR_CHAINUP
 
 #define G_DEFINE_TYPE(ModObjName, mod_obj_name, PARENT_TYPE) \
-	static void mod_obj_name##_class_init ( ModObjName##Class *klass ); \
-	static void mod_obj_name##_init ( ModObjName *obj ); \
-	static ModObjName mod_obj_name##_class; \
-	static gboolean mod_obj_name##_done_class_init; \
-	static gpointer mod_obj_name##_parent_class = &mod_obj_name##_class; \
+	G_DEFINE_TYPE_EXTENDED(ModObjName, mod_obj_name, PARENT_TYPE, 0, {};)
+
+#define G_DEFINE_TYPE_EXTENDED(ModObjName, mod_obj_name, PARENT_TYPE, FLAGS, CUSTOM_CODE) \
+	static void mod_obj_name##_init(ModObjName *self); \
+	static void mod_obj_name##_class_init(ModObjName##Class *klass); \
+	static gpointer mod_obj_name##_parent_class = NULL; \
+	static gint ModObjName##_private_offset; \
 	static void mod_obj_name##_class_intern_init(gpointer klass) { \
-		GType parent_type = PARENT_TYPE; \
-		parent_type.class_init(&((ModObjName##Class *) klass)->parent_class); \
-		/* ((ModObjName##Class *) klass)->constructor = ((ModObjName##Class *) klass)->parent_class.constructor; */ \
-		mod_obj_name##_parent_class = (gpointer) parent_type.klass; \
-		mod_obj_name##_class_init((ModObjName##Class *)klass); \
+		mod_obj_name##_parent_class = g_type_class_peek_parent(klass); \
+		mod_obj_name##_class_init((ModObjName *) klass); \
 	} \
 	GType mod_obj_name##_get_type() { \
-		GType ret; \
-		ret.name = "ModObjName"; \
-		ret.size=sizeof(ModObjName); \
-		ret.done_class_init=&mod_obj_name##_done_class_init; \
-		ret.klass=(gpointer) &mod_obj_name##_class; \
-		ret.class_init=&mod_obj_name##_class_intern_init; \
-		ret.init = mod_obj_name##_init; \
-		return ret; \
-	}
+		GType gdefine_type_id = g_type_register_static_simple( \
+			PARENT_TYPE, \
+			"ModObjName", \
+			sizeof(ModObjName##Class), \
+			(GClassInitFunc) mod_obj_name##_class_intern_init, \
+			sizeof(MOdObjName), \
+			(GInstanceInitFunc) mod_obj_name##_init, \
+			FLAGS \
+		); \
+		CUSTOM_CODE; \
+	} \
 
 #endif
