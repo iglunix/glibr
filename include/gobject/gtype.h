@@ -2,6 +2,7 @@
 #define __G_TYPE_H__
 
 #include <glib.h>
+#include <stddef.h>
 
 /*
  * GType is just an index in the global type registry
@@ -62,9 +63,9 @@ typedef struct _GTypeInfo {
 	GClassFinalizeFunc class_finalize;
 	gconstpointer class_data;
 
-	guint16 instace_size;
+	guint16 instance_size;
 	guint16 n_preallocs;
-	GInstanceInitFunc instace_init;
+	GInstanceInitFunc instance_init;
 
 	const GTypeValueTable *value_table;
 } GTypeInfo;

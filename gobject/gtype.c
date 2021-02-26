@@ -7,15 +7,13 @@
 
 /*
  * TODO:
- * GLOBAL TYPE REGISTRY
  * 
+ * Need to implement GQuark to do this
  * GQuark	g_type_qname ()
+ * 
+ * Docs don't make much sense; need to test how actual gobject works for this
  * GType	g_type_next_base ()
- * gboolean	g_type_is_a ()
- * gpointer	g_type_class_ref ()
- * gpointer	g_type_class_peek ()
- * gpointer	g_type_class_peek_static ()
- * void	g_type_class_unref ()
+ * 
  * gpointer	g_type_class_peek_parent ()
  * void	g_type_class_add_private ()
  * void	g_type_add_class_private ()
@@ -48,7 +46,6 @@
  * void	g_type_remove_interface_check ()
  * void	(*GTypeInterfaceCheckFunc) ()
  * GTypeValueTable *	g_type_value_table_peek ()
- * void	g_type_ensure ()
  * guint	g_type_get_type_registration_serial ()
  * int	g_type_get_instance_count ()
  */
@@ -60,6 +57,14 @@ struct TypeRegistryNode {
 	size_t *parents;
 	size_t child_count;
 	size_t *children;
+
+	guint class_size;
+	GClassInitFunc class_init;
+	guint instance_size;
+	GInstanceInitFunc instance_init;
+
+	size_t class_ref_count;
+	gpointer klass;
 };
 
 /*
@@ -99,6 +104,7 @@ static void init_type(
 	type_registry[id].parents = NULL;
 	type_registry[id].child_count = 0;
 	type_registry[id].children = NULL;
+	type_registry[id].klass = NULL;
 }
 
 static GType next_free_type() {
@@ -137,6 +143,13 @@ GType g_type_register_static(
 	type_registry[ret].parent_count = 1;
 	type_registry[ret].parents = malloc(sizeof(GType) * 1);
 	type_registry[ret].parents[0] = parent_type;
+
+	type_registry[ret].class_size = info->class_size;
+	type_registry[ret].class_init = info->class_init;
+
+	type_registry[ret].instance_size = info->instance_size;
+	type_registry[ret].instance_init = info->instance_init;
+
 	return ret;
 }
 
@@ -149,7 +162,12 @@ GType g_type_register_static_simple(
 	GInstanceInitFunc instance_init,
 	GTypeFlags flags
 ) {
-	return g_type_register_static(parent_type, type_name, NULL, 0);
+	GTypeInfo info;
+	info.class_size = class_size;
+	info.class_init = class_init;
+	info.instance_size = instance_size;
+	info.instance_init = instance_init;
+	return g_type_register_static(parent_type, type_name, &info, 0);
 }
 
 /*
@@ -162,7 +180,7 @@ void g_type_init() {
 /*
  * Deprecated
  */
-void g_type_init_with_debug_flags(GTypeDebugFlags not_used) {
+void g_type_init_with_debug_flags(GTypeDebugFlags _not_used) {
 
 }
 
@@ -207,4 +225,56 @@ GType *g_type_children(GType type, guint *count) {
 	memcpy(ret, type_registry[type].children, type_registry[type].child_count);
 	ret[type_registry[type].child_count] = 0;
 	return ret;
+}
+
+GType g_type_is_a(GType type, GType is_a_type) {
+	return type
+	    && type == is_a_type
+	    || g_type_is_a(g_type_parent(type), is_a_type);
+}
+
+gpointer g_type_class_ref(GType type) {
+	if (!type_registry_initialised[type]) {
+		return NULL;
+	}
+	if (!type_registry[type].klass) {
+		gpointer klass = malloc(type_registry[type].class_size);
+		((GTypeClass *) klass)->g_type = type;
+		type_registry[type].class_init(klass);
+		type_registry[type].klass = klass;
+	}
+	type_registry[type].class_ref_count += 1;
+	return type_registry[type].klass;
+}
+
+gpointer g_type_class_peek(GType type) {
+	if (!type_registry_initialised[type]) {
+		return NULL;
+	}
+	return type_registry[type].klass;
+}
+
+/*
+ * This is just meant to be a more efficent version of `g_type_class_peek` so
+ * we just call that
+ */
+
+gpointer g_type_class_peek_static(GType type) {
+	return g_type_class_peek(type);
+}
+
+void g_type_class_unref(gpointer g_class) {
+	type_registry[((GTypeClass *) g_class)->g_type].class_ref_count -= 1;
+}
+
+gpointer g_type_class_peek_parent(gpointer g_class) {
+	return type_registry[g_type_parent(((GTypeClass *) g_class)->g_type)].klass;
+}
+
+/*
+ * This does nothing since we don't in anyway use `G_GNUC_CONST` to trick the
+ * compiler into optimising stuff
+ */
+void g_type_ensure(GType _not_used) {
+
 }

@@ -148,7 +148,7 @@ GString *g_string_insert_c(GString *str, gssize pos, gchar c) {
  * `dest` MUST have enough space for at least 4 chars
  * returns number of bytes used
  */
-size_t str_from_unichar(char *dest, uint32_t unichar) {
+static size_t str_from_unichar(char *dest, uint32_t unichar) {
 	if (unichar < (1 << 7)) {
 		*dest = (char) unichar;
 		return 1;
