@@ -4,23 +4,87 @@
 #include <glib.h>
 
 /*
- * In GLib this is a single unique identifier
- * but that requires a global registry of types
- * 
- * I'll probably end up doing that for compatibility
- * and might clean up this messy struct
- * 
- * need to add "getters" for these fields to allow that
+ * GType is just an index in the global type registry
  */
 
-typedef struct _GType {
+typedef size_t GType;
+
+#include <gobject/gvalue.h>
+#include <gobject/gvaluecollector.h>
+
+typedef enum _GTypeDebugFlags {
+	G_TYPE_DEBUG_NONE,
+	G_TYPE_DEBUG_OBJECT,
+	G_TYPE_DEBUG_SIGNALS,
+	G_TYPE_DEBUG_INSTANCE_COUNT,
+	G_TYPE_DEBUG_MASK
+} GTypeDebugFlags;
+
+/*
+ * TODO
+ */
+typedef struct GTypeInstance {
+	void *empty;
+} GTypeInstance;
+
+typedef void (*GBaseInitFunc)(gpointer g_class);
+typedef void (*GBaseFinalizeFunc)(gpointer g_class);
+typedef void (*GClassInitFunc)(gpointer g_class);
+typedef void (*GClassFinalizeFunc)(gpointer g_class);
+typedef void (*GInstanceInitFunc)(GTypeInstance *instance, gpointer g_class);
+
+typedef struct _GTypeValueTable {
+	void (*value_init)(GValue *value);
+	void (*value_free)(GValue *value);
+	void (*value_copy)(GValue const *src_value, GValue *dest_value);
+
+	gpointer (*value_peek_pointer)(GValue const *value);
+	gchar const *collect_format;
+	gchar *(*collect_value) (GValue *, guint, GTypeCValue, guint);
+
+	gchar const *lcopy_format;
+	gchar *(*lcopy_value) (const GValue *, guint, GTypeCValue, guint);
+} GTypeValueTable;
+
+typedef struct _GTypeInfo {
+	guint16 class_size;
+
+	GBaseInitFunc base_init;
+	GBaseFinalizeFunc base_finalize;
+
+	GClassInitFunc class_init;
+	GClassFinalizeFunc class_finalize;
+	gconstpointer class_data;
+
+	guint16 instace_size;
+	guint16 n_preallocs;
+	GInstanceInitFunc instace_init;
+
+	const GTypeValueTable *value_table;
+} GTypeInfo;
+
+typedef enum _GTypeFundamentalFlags {
+	G_TYPE_FLAG_CLASSED,
+	G_TYPE_FLAG_INSTANTIATABLE,
+	G_TYPE_FLAG_DERIVABLE,
+	G_TYPE_FLAG_DEEP_DERIVABLE
+} GTypeFundamentalFlags;
+
+typedef struct _GTypeFundamental {
+	GTypeFundamentalFlags type_flags;
+} GTypeFundamental;
+
+/*typedef struct _GType {
 	struct _GType (*parent_get_type)();
+	gchar const *name;
 	gsize size;
 	gpointer klass;
 	gboolean *done_class_init;
 	void (*class_init)(gpointer klass);
 	void (*init)(gpointer obj);
-} GType;
+} GType;*/
+
+
 
 /*
  * base of every class
@@ -86,6 +150,7 @@ GType g_object_get_type();
 	} \
 	GType mod_obj_name##_get_type() { \
 		GType ret; \
+		ret.name = "ModObjName"; \
 		ret.size=sizeof(ModObjName); \
 		ret.done_class_init=&mod_obj_name##_done_class_init; \
 		ret.klass=(gpointer) &mod_obj_name##_class; \

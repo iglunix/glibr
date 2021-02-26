@@ -10,11 +10,11 @@ GObject *g_object_constructor(GType type, guint prop_count, GObjectConstructPara
 	/*
          * TODO: g_type_create_instance(type)
          */
-	ret = (GObject *) malloc(type.size);
+	//ret = (GObject *) malloc(type.size);
 	/*
          * TODO: handle constructor params
          */
-	type.init(ret);
+	//type.init(ret);
 	return ret;
 }
 
@@ -45,31 +45,32 @@ static GObjectClass g_object_class;
  */
 GType g_object_get_type() {
 	GType ret;
-	ret.size = sizeof(GObject);
-	ret.class_init = (void (*)(gpointer)) g_object_class_init;
-	ret.klass = (gpointer) &g_object_class;
-	G_OBJECT_CLASS(ret.klass)->constructor = &g_object_constructor;
-	ret.init = g_object_init;
-	/*
-         * Must be more than just an object
-         * so don't need to keep track of
-         * class init
-         */
-	ret.done_class_init = NULL;
+	// TODO:
+	// ret.size = sizeof(GObject);
+	// ret.class_init = (void (*)(gpointer)) g_object_class_init;
+	// ret.klass = (gpointer) &g_object_class;
+	// G_OBJECT_CLASS(ret.klass)->constructor = &g_object_constructor;
+	// ret.init = g_object_init;
+	// /*
+ //         * Must be more than just an object
+ //         * so don't need to keep track of
+ //         * class init
+ //         */
+	// ret.done_class_init = NULL;
 
 	return ret;
 }
 
 GObject *g_object_new(GType type, gchar const *names, ...) {
-	GObject *ret = malloc(type.size);
-	if (!*type.done_class_init) {
-		((GObjectClass *)type.klass)->constructor = NULL;
-		type.class_init(type.klass);
-		*type.done_class_init=TRUE;
-	}
-	ret = ((GObjectClass *)type.klass)->constructor(type, 0, NULL);
+	// GObject *ret = malloc(type.size);
+	// if (!*type.done_class_init) {
+	// 	((GObjectClass *)type.klass)->constructor = NULL;
+	// 	type.class_init(type.klass);
+	// 	*type.done_class_init=TRUE;
+	// }
+	// ret = ((GObjectClass *)type.klass)->constructor(type, 0, NULL);
 	// type.init(ret);
-	return ret;
+	return NULL;
 }
 
 gpointer g_object_ref(gpointer object) {

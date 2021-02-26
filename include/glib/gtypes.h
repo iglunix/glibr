@@ -20,5 +20,6 @@ typedef unsigned long gulong;
 typedef unsigned long gsize;
 typedef signed long gssize;
 typedef void* gpointer;
+typedef void const* gconstpointer;
 
 #endif
