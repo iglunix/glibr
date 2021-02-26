@@ -20,6 +20,12 @@ typedef enum _GTypeDebugFlags {
 	G_TYPE_DEBUG_MASK
 } GTypeDebugFlags;
 
+typedef enum GTypeFlags {
+	G_TYPE_FLAG_ABSTRACT,
+	G_TYPE_FLAG_VALUE_ABSTRACT
+} GTypeFlags;
+
+
 /*
  * TODO
  */
@@ -70,9 +76,9 @@ typedef enum _GTypeFundamentalFlags {
 	G_TYPE_FLAG_DEEP_DERIVABLE
 } GTypeFundamentalFlags;
 
-typedef struct _GTypeFundamental {
+typedef struct _GTypeFundamentalInfo {
 	GTypeFundamentalFlags type_flags;
-} GTypeFundamental;
+} GTypeFundamentalInfo;
 
 /*typedef struct _GType {
 	struct _GType (*parent_get_type)();

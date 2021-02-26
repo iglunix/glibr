@@ -2,5 +2,7 @@
 *.so
 *.ccls-cache
 *.sample
+.ninja*
+.cache
 tainted
 compile_commands.json

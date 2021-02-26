@@ -1,3 +1,7 @@
+#include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include <glib/gtypes.h>
 #include <gobject/gtype.h>
 
@@ -74,7 +78,7 @@ static struct TypeRegistryNode *type_registry = NULL;
 
 static void init_type(
 	GType id,
-	gchar const *name,
+	gchar const *name
 ) {
 	while (id < type_allocated) {
 		size_t old_allocated = type_allocated;
@@ -86,9 +90,9 @@ static void init_type(
 		);
 		type_registry_initialised = realloc(
     			type_registry_initialised,
-    			type_allocated,
+    			type_allocated
     		);
-		memset(type_registry_initialised + old_type_allocated, 0, type_allocated - type_registry_initialised);
+		memset(type_registry_initialised + old_allocated, 0, type_allocated - old_allocated);
 	}
 	type_registry_initialised[id] = 1;
 	type_registry[id].parent_count = 0;
@@ -125,19 +129,19 @@ GType g_type_fundamental_next() {
 GType g_type_register_static(
 	GType parent_type,
 	gchar const *type_name,
-	const GTypeInfo *info
+	const GTypeInfo *info,
 	GTypeFlags flags
 ) {
 	GType ret = next_free_type();
 	init_type(ret, type_name);
-	type_registry[id].parent_count = 1;
-	type_registry[id].parents = malloc(sizeof(GType) * 1)p;
-	type_registry[id].parents[0] = parent_type;
+	type_registry[ret].parent_count = 1;
+	type_registry[ret].parents = malloc(sizeof(GType) * 1);
+	type_registry[ret].parents[0] = parent_type;
 	return ret;
 }
 
 GType g_type_register_static_simple(
-	GType id,
+	GType parent_type,
 	gchar const *type_name,
 	guint class_size,
 	GClassInitFunc class_init,
@@ -169,7 +173,7 @@ gchar const *g_type_name(GType type) {
 GType g_type_from_name(gchar const *name) {
 	for (size_t i = 0; i < type_allocated; i++) {
 		if (type_registry_initialised[i]
-		 && !strcmp(name, type)) {
+		 && !strcmp(name, g_type_name(i))) {
     			return i;
 		}
 	}
@@ -187,7 +191,7 @@ GType g_type_parent(GType type) {
 
 guint g_type_depth(GType type) {
 	GType parent = g_type_parent(type);
-	if (parent)
+	if (parent) {
     		return g_type_depth(parent) + 1;
 	} else {
     		return 1;

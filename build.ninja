@@ -1,0 +1,18 @@
+cc = c99
+
+rule cc
+    command = $cc -fPIC -Iinclude/ -c -o $out $in
+
+rule ld
+    command = $cc -shared -o $out $in
+
+build gstring.o: cc glib/gstring.c
+build gmessages.o: cc glib/gmessages.c
+build glist.o: cc glib/glist.c
+
+build gobject.o: cc gobject/gobject.c
+build gtype.o: cc gobject/gtype.c
+
+build libglib.so: ld gstring.o gmessages.o glist.o gobject.o gtype.o
+
+default libglib.so
