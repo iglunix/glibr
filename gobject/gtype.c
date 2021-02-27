@@ -72,7 +72,7 @@ struct TypeRegistryNode {
  * other elements in the array as parents and children
  */
 
-static size_t next_free = 0;
+static size_t next_free = 1;
 static size_t type_allocated = 0;
 
 /*
@@ -110,8 +110,8 @@ static void init_type(
 
 static GType next_free_type() {
 	if (!type_registry) {
-    		next_free++;
-		return 0;
+    		next_free += 1;
+		return 1;
 	}
 	while (type_registry_initialised[next_free]) {
 		next_free++;

@@ -150,7 +150,7 @@ GType g_object_get_type();
 	GType mod_obj_name##_get_type() { \
 		GType ret = g_type_from_name("ModObjName"); \
 		if (!ret) { \
-			GType ret= g_type_register_static_simple( \
+			ret = g_type_register_static_simple( \
 				PARENT_TYPE, \
 				"ModObjName", \
 				sizeof(ModObjName##Class), \
