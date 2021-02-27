@@ -108,6 +108,9 @@ static void init_type(
 }
 
 static GType next_free_type() {
+	if (!type_registry) {
+		return 0;
+	}
 	while (type_registry_initialised[next_free]) {
 		next_free++;
 	}
