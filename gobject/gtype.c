@@ -100,6 +100,7 @@ static void init_type(
 		memset(type_registry_initialised + old_allocated, 0, type_allocated - old_allocated);
 	}
 	type_registry_initialised[id] = 1;
+	type_registry[id].name = name;
 	type_registry[id].parent_count = 0;
 	type_registry[id].parents = NULL;
 	type_registry[id].child_count = 0;
