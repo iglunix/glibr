@@ -6,15 +6,10 @@
  */
 GObject *g_object_constructor(GType type, guint prop_count, GObjectConstructParam *construct_params) {
 	puts("Parent Constructor");
-	GObject *ret;
-	/*
-         * TODO: g_type_create_instance(type)
-         */
-	//ret = (GObject *) malloc(type.size);
+	GObject *ret = (GObject *) g_type_create_instance(type);
 	/*
          * TODO: handle constructor params
          */
-	//type.init(ret);
 	return ret;
 }
 
@@ -70,7 +65,8 @@ GType g_object_get_type() {
 }
 
 GObject *g_object_new(GType type, gchar const *names, ...) {
-	GObject *ret = g_type_create_instance(type);
+	gpointer klass = g_type_class_ref(type);
+	GObject *ret = G_OBJECT_CLASS(klass)->constructor(type, 0, NULL);
 
 	// GObject *ret = malloc(type.size);
 	// if (!*type.done_class_init) {
