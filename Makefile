@@ -26,7 +26,7 @@ clean:
 	rm *.so 2>/dev/null || exit 0
 
 libglib.so: gstring.o gmessages.o glist.o gobject.o gtype.o
-	$(CC) $(LDFLAGS) -shared -o libglib.so gstring.o gmessages.o glist.o gobject.o
+	$(CC) $(LDFLAGS) -shared -o libglib.so gstring.o gmessages.o glist.o gobject.o gtype.o
 
 
 ########

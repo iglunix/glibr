@@ -32,7 +32,7 @@ void g_object_class_init(GObjectClass *self) {
  * The initialiser for every object
  */
 void g_object_init(GObject *self) {
-	puts("Parent Init");
+	self->ref_count = 1;
 }
 
 /*
@@ -62,6 +62,8 @@ GType g_object_get_type() {
 }
 
 GObject *g_object_new(GType type, gchar const *names, ...) {
+	GObject *ret = g_type_create_instance(type);
+
 	// GObject *ret = malloc(type.size);
 	// if (!*type.done_class_init) {
 	// 	((GObjectClass *)type.klass)->constructor = NULL;
@@ -70,7 +72,7 @@ GObject *g_object_new(GType type, gchar const *names, ...) {
 	// }
 	// ret = ((GObjectClass *)type.klass)->constructor(type, 0, NULL);
 	// type.init(ret);
-	return NULL;
+	return ret;
 }
 
 gpointer g_object_ref(gpointer object) {

@@ -227,7 +227,7 @@ GType *g_type_children(GType type, guint *count) {
 	return ret;
 }
 
-GType g_type_is_a(GType type, GType is_a_type) {
+gboolean g_type_is_a(GType type, GType is_a_type) {
 	return type
 	    && type == is_a_type
 	    || g_type_is_a(g_type_parent(type), is_a_type);
@@ -269,6 +269,13 @@ void g_type_class_unref(gpointer g_class) {
 
 gpointer g_type_class_peek_parent(gpointer g_class) {
 	return type_registry[g_type_parent(((GTypeClass *) g_class)->g_type)].klass;
+}
+
+GTypeInstance *g_type_create_instance(GType type) {
+	GTypeInstance *ret = malloc(type_registry[type].instance_size);
+	ret->g_class = g_type_class_ref(type);
+	type_registry[type].instance_init(ret, ret->g_class);
+	return ret;
 }
 
 /*

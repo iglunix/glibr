@@ -28,11 +28,36 @@ typedef enum GTypeFlags {
 
 
 /*
- * TODO
+ * base of every class
  */
-typedef struct GTypeInstance {
-	void *empty;
+typedef struct _GTypeClass {
+	GType g_type;
+} GTypeClass;
+
+/*
+ * base of every object constructed
+ */
+typedef struct _GTypeInstance {
+	/*
+         * All objects need to know what type they are
+         */
+	GTypeClass *g_class;
 } GTypeInstance;
+
+/*
+ * base of all interfaces
+ */
+typedef struct _GTypeInterface {
+	/*
+         * the type information
+         */
+	GType g_type;
+	/*
+         * Keeps track of child type
+         * I'm sure the reasoning for this will come clear later
+         */
+	GType g_instance_type;
+} GTypeInterface;
 
 typedef void (*GBaseInitFunc)(gpointer g_class);
 typedef void (*GBaseFinalizeFunc)(gpointer g_class);
@@ -93,38 +118,6 @@ typedef struct _GTypeFundamentalInfo {
 
 
 
-/*
- * base of every class
- */
-typedef struct _GTypeClass {
-	GType g_type;
-} GTypeClass;
-
-/*
- * base of every object constructed
- */
-typedef struct _GTypeInstace {
-	/*
-         * All objects need to know what type they are
-         */
-	GTypeClass g_class;
-} GTypeInstace;
-
-/*
- * base of all interfaces
- */
-typedef struct _GTypeInterface {
-	/*
-         * the type information
-         */
-	GType g_type;
-	/*
-         * Keeps track of child type
-         * I'm sure the reasoning for this will come clear later
-         */
-	GType g_instance_type;
-} GTypeInterface;
-
 GType g_object_get_type();
 #define G_TYPE_OBJECT g_object_get_type()
 
@@ -160,7 +153,7 @@ GType g_object_get_type();
 			"ModObjName", \
 			sizeof(ModObjName##Class), \
 			(GClassInitFunc) mod_obj_name##_class_intern_init, \
-			sizeof(MOdObjName), \
+			sizeof(ModObjName), \
 			(GInstanceInitFunc) mod_obj_name##_init, \
 			FLAGS \
 		); \
@@ -168,3 +161,29 @@ GType g_object_get_type();
 	} \
 
 #endif
+
+GType g_type_register_fundamental(GType, gchar const *, const GTypeInfo *, const GTypeFundamentalInfo *, GTypeFlags);
+GType g_type_register_static(GType, gchar const *, const GTypeInfo *, GTypeFlags);
+GType g_type_register_static_simple(GType, gchar const *, guint, GClassInitFunc, guint, GInstanceInitFunc, GTypeFlags);
+
+void g_type_int();
+void g_type_init_with_debug_flags();
+
+gchar const *g_type_name(GType);
+GType g_type_from_name(gchar const *);
+
+GType g_type_parent(GType);
+guint g_typ_depth(GType);
+GType *g_type_children(GType, guint *);
+
+gboolean g_type_is_a(GType, GType);
+
+gpointer g_type_class_ref(GType);
+gpointer g_type_class_peek(GType);
+gpointer g_type_class_peek_static(GType);
+void g_type_class_unref(gpointer);
+gpointer g_type_class_peek_parent(gpointer g_class);
+GTypeInstance *g_type_create_instance(GType);
+
+void g_type_ensure(GType);
+

@@ -5,6 +5,7 @@
 #include <gobject/gvalue.h>
 
 typedef struct _GObject {
+	GTypeInstance base_instance;
 	volatile unsigned int ref_count;
 } GObject;
 
@@ -13,11 +14,6 @@ typedef struct _GObjectConstructParam {
 } GObjectConstructParam;
 
 typedef struct _GObjectClass {
-	/*
-         * Function for allocating a GObject
-         * 
-         * is this needed?
-         */
 	gpointer (*constructor)(GType, guint, GObjectConstructParam *);
 } GObjectClass;
 
