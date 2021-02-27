@@ -85,7 +85,7 @@ static void init_type(
 	GType id,
 	gchar const *name
 ) {
-	while (id < type_allocated) {
+	while (id >= type_allocated) {
 		size_t old_allocated = type_allocated;
 		type_allocated || (type_allocated += 1);
 		type_allocated *= 2;
@@ -109,6 +109,7 @@ static void init_type(
 
 static GType next_free_type() {
 	if (!type_registry) {
+    		next_free++;
 		return 0;
 	}
 	while (type_registry_initialised[next_free]) {
