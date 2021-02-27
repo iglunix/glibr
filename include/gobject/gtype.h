@@ -158,6 +158,7 @@ GType g_object_get_type();
 			FLAGS \
 		); \
 		CUSTOM_CODE; \
+		return gdefine_type_id; \
 	} \
 
 #endif
