@@ -148,20 +148,25 @@ GType g_object_get_type();
 		mod_obj_name##_class_init((ModObjName *) klass); \
 	} \
 	GType mod_obj_name##_get_type() { \
-		GType gdefine_type_id = g_type_register_static_simple( \
-			PARENT_TYPE, \
-			"ModObjName", \
-			sizeof(ModObjName##Class), \
-			(GClassInitFunc) mod_obj_name##_class_intern_init, \
-			sizeof(ModObjName), \
-			(GInstanceInitFunc) mod_obj_name##_init, \
-			FLAGS \
-		); \
-		CUSTOM_CODE; \
-		return gdefine_type_id; \
+		GType ret = g_type_from_name("ModObjName"); \
+		if (!ret) { \
+			GType ret= g_type_register_static_simple( \
+				PARENT_TYPE, \
+				"ModObjName", \
+				sizeof(ModObjName##Class), \
+				(GClassInitFunc) mod_obj_name##_class_intern_init, \
+				sizeof(ModObjName), \
+				(GInstanceInitFunc) mod_obj_name##_init, \
+				FLAGS \
+			); \
+			CUSTOM_CODE; \
+		} \
+		return ret; \
 	} \
 
 #endif
+
+GType g_type_fundamental_next();
 
 GType g_type_register_fundamental(GType, gchar const *, const GTypeInfo *, const GTypeFundamentalInfo *, GTypeFlags);
 GType g_type_register_static(GType, gchar const *, const GTypeInfo *, GTypeFlags);

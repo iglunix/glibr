@@ -44,7 +44,16 @@ static GObjectClass g_object_class;
  * Get type information about GObject
  */
 GType g_object_get_type() {
-	GType ret;
+	GType ret = g_type_from_name("GObject");
+	if (!ret) {
+    		ret = g_type_fundamental_next();
+    		GTypeInfo info;
+    		info.class_size = sizeof(GObjectClass);
+    		info.class_init = g_object_class_init;
+    		info.instance_size = sizeof(GObject);
+    		info.instance_init = g_object_init;
+		g_type_register_fundamental(ret, "GObject", &info, NULL, 0);
+	}
 	// TODO:
 	// ret.size = sizeof(GObject);
 	// ret.class_init = (void (*)(gpointer)) g_object_class_init;
@@ -57,7 +66,6 @@ GType g_object_get_type() {
  //         * class init
  //         */
 	// ret.done_class_init = NULL;
-
 	return ret;
 }
 

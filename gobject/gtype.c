@@ -129,6 +129,11 @@ GType g_type_register_fundamental(
 	GTypeFlags flags
 ) {
 	init_type(id, type_name);
+	type_registry[id].class_size = info->class_size;
+	type_registry[id].class_init = info->class_init;
+
+	type_registry[id].instance_size = info->instance_size;
+	type_registry[id].instance_init = info->instance_init;
 	return id;
 }
 
@@ -272,7 +277,7 @@ void g_type_class_unref(gpointer g_class) {
 }
 
 gpointer g_type_class_peek_parent(gpointer g_class) {
-	return type_registry[g_type_parent(((GTypeClass *) g_class)->g_type)].klass;
+	return g_type_class_ref(g_type_parent(((GTypeClass *) g_class)->g_type));
 }
 
 GTypeInstance *g_type_create_instance(GType type) {
