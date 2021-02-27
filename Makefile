@@ -60,3 +60,4 @@ install:
 	sed 's|prefix=/usr|prefix=$(PREFIX)|g' glibr.pc > $(DESTDIR)/$(LIBDIR)/pkgconfig/glibr.pc
 	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/glib-2.0.pc
 	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/gobject-2.0.pc
+	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/gio-2.0.pc
