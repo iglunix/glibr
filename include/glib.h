@@ -16,6 +16,7 @@
 #include <glib/gstring.h>
 #include <glib/gtypes.h>
 #include <glib/gtestutils.h>
+#include <glib/gmem.h>
 #include <glibconfig.h>
 
 #endif

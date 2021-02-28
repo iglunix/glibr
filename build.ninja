@@ -9,11 +9,13 @@ rule ld
 build gstring.o: cc glib/gstring.c
 build gmessages.o: cc glib/gmessages.c
 build glist.o: cc glib/glist.c
+build gmem.o: cc glib/gmem.c
+build gthread.o: cc glib/gthread.c
 
 build gobject.o: cc gobject/gobject.c
 build gtype.o: cc gobject/gtype.c
 build gboxed.o: cc gobject/gboxed.c
 
-build libglib.so: ld gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o
+build libglib.so: ld gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o gmem.o gthread.o
 
 default libglib.so

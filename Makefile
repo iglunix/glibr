@@ -25,8 +25,8 @@ clean:
 	rm *.o 2>/dev/null || exit 0
 	rm *.so 2>/dev/null || exit 0
 
-libglib.so: gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o
-	$(CC) $(LDFLAGS) -shared -o libglib.so gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o
+libglib.so: gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o gmem.o gthread.o
+	$(CC) $(LDFLAGS) -shared -o libglib.so gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o gmem.o gthread.o
 
 
 ########
@@ -41,6 +41,14 @@ gmessages.o: include/glib/gmessages.h include/glib/gtypes.h glib/gmessages.c
 
 glist.o: include/glib/glist.h include/glib/gtypes.h glib/glist.c
 	$(CC) -Iinclude/ -fPIC -c $(CFLAGS) -o glist.o glib/glist.c
+
+gmem.o: include/glib/gmem.h include/glib/gtypes.h glib/gmem.c
+	$(CC) -Iinclude/ -fPIC -c $(CFLAGS) -o gmem.o glib/gmem.c
+
+gthread.o: include/glib/gthread.h include/glib/gtypes.h glib/gthread.c
+	$(CC) -Iinclude/ -fPIC -c $(CFLAGS) -o gthread.o glib/gthread.c
+
+
 
 ###########
 # GOBJECT #
@@ -63,6 +71,16 @@ install:
 	cp -rf include/* $(DESTDIR)/$(INCLUDEDIR)/glibr
 	cp libglib.so $(DESTDIR)/$(LIBDIR)
 	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libglib.so.1
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libglib-2.0.so
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libglib-2.0.so.1
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libgobject-2.0.so
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libgobject-2.0.so.1
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libgio-2.0.so
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libgio-2.0.so.1
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libgthread-2.0.so
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libgthread-2.0.so.1
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libgmodule-2.0.so
+	ln -fs libglib.so $(DESTDIR)/$(LIBDIR)/libgmodule-2.0.so.1
 	sed 's|prefix=/usr|prefix=$(PREFIX)|g' glibr.pc > $(DESTDIR)/$(LIBDIR)/pkgconfig/glibr.pc
 	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/glib-2.0.pc
 	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/gobject-2.0.pc
