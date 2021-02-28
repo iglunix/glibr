@@ -1,5 +1,7 @@
 #ifndef __G_STRING_H__
 #define __G_STRING_H__
+
+#include <stdarg.h>
 #include <glib/gtypes.h>
 #include <glib/gunicode.h>
 

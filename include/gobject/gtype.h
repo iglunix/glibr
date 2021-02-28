@@ -120,6 +120,8 @@ typedef struct _GTypeFundamentalInfo {
 
 GType g_object_get_type();
 #define G_TYPE_OBJECT g_object_get_type()
+GType g_boxed_get_type();
+#define G_TYPE_BOXED g_boxed_get_type()
 
 
 /*

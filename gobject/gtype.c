@@ -4,6 +4,9 @@
 
 #include <glib/gtypes.h>
 #include <gobject/gtype.h>
+#include <gobject/gboxed.h>
+
+#include "gtypeintern.h"
 
 /*
  * TODO:
@@ -65,6 +68,14 @@ struct TypeRegistryNode {
 
 	size_t class_ref_count;
 	gpointer klass;
+
+	/*
+	 * Extra stuff for the boxed fundamental
+	 */
+	struct {
+		GBoxedCopyFunc cpyfunc;
+		GBoxedFreeFunc freefunc;
+	} boxed_extras;
 };
 
 /*
@@ -178,6 +189,19 @@ GType g_type_register_static_simple(
 	info.instance_size = instance_size;
 	info.instance_init = instance_init;
 	return g_type_register_static(parent_type, type_name, &info, 0);
+}
+
+void g_type_intern_register_boxed_extras(GType type, GBoxedCopyFunc cpyfunc, GBoxedFreeFunc freefunc) {
+	type_registry[type].boxed_extras.cpyfunc = cpyfunc;
+	type_registry[type].boxed_extras.freefunc = freefunc;
+}
+
+GBoxedCopyFunc g_type_intern_peek_boxed_extras_cpy(GType type) {
+	return type_registry[type].boxed_extras.cpyfunc;
+}
+
+GBoxedFreeFunc g_type_intern_peek_boxed_extras_free(GType type) {
+	return type_registry[type].boxed_extras.freefunc;
 }
 
 /*

@@ -25,8 +25,8 @@ clean:
 	rm *.o 2>/dev/null || exit 0
 	rm *.so 2>/dev/null || exit 0
 
-libglib.so: gstring.o gmessages.o glist.o gobject.o gtype.o
-	$(CC) $(LDFLAGS) -shared -o libglib.so gstring.o gmessages.o glist.o gobject.o gtype.o
+libglib.so: gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o
+	$(CC) $(LDFLAGS) -shared -o libglib.so gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o
 
 
 ########
@@ -51,6 +51,12 @@ gobject.o: include/gobject/gobject.h gobject/gobject.c
 
 gtype.o: include/gobject/gtype.h gobject/gtype.c
 	$(CC) -Iinclude/ -fPIC -c $(CFLAGS) -o gtype.o gobject/gtype.c
+
+gboxed.o: include/gobject/gboxed.h gobject/gboxed.c
+	$(CC) -Iinclude/ -fPIC -c $(CFLAGS) -o gboxed.o gobject/gboxed.c
+#######
+# GIO #
+#######
 
 install:
 	mkdir -p $(DESTDIR)/$(INCLUDEDIR)/glibr $(DESTDIR)/$(LIBDIR)/pkgconfig
