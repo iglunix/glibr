@@ -2,6 +2,7 @@
 .SUFFIXES:
 PREFIX = /usr/local
 LIBDIR = $(PREFIX)/lib
+BINDIR = $(PREFIX)/bin
 INCLUDEDIR = $(PREFIX)/include
 
 all: libglib.so
@@ -85,3 +86,4 @@ install:
 	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/glib-2.0.pc
 	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/gobject-2.0.pc
 	ln -fs glibr.pc $(DESTDIR)/$(LIBDIR)/pkgconfig/gio-2.0.pc
+	install -Dm755 tools/mkenums.py $(DESTDIR)/$(BINDIR)/glib-mkenums

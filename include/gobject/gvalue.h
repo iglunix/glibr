@@ -2,9 +2,10 @@
 #define _G_VALUE_H_
 
 #include <glib/gtypes.h>
+#include <stddef.h>
 
 typedef struct _GValue {
-	GType g_type;
+	size_t g_type;
 	union {
 		gint v_int;
 		guint v_uint;
