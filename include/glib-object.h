@@ -5,5 +5,6 @@
 #include <gobject/gobject.h>
 #include <gobject/gtype.h>
 #include <gobject/gvalue.h>
+#include <gobject/gboxed.h>
 
 #endif
