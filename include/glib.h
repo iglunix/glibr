@@ -17,6 +17,7 @@
 #include <glib/gtypes.h>
 #include <glib/gtestutils.h>
 #include <glib/gmem.h>
+#include <glib/gthread.h>
 #include <glibconfig.h>
 
 #endif
