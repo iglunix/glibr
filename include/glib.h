@@ -11,13 +11,18 @@
 #define __GLIBR__
 
 #include <glib/gmacros.h>
+#include <glib/gversionmacros.h>
 #include <glib/glist.h>
+#include <glib/gslist.h>
 #include <glib/gmessages.h>
 #include <glib/gstring.h>
 #include <glib/gtypes.h>
 #include <glib/gtestutils.h>
 #include <glib/gmem.h>
 #include <glib/gthread.h>
+#include <glib/gunicode.h>
+#include <glib/gerror.h>
+#include <glib/gmarkup.h>
 #include <glibconfig.h>
 
 #endif

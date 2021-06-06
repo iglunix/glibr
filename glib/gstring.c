@@ -39,7 +39,7 @@ GString *g_string_sized_new(gssize size) {
 	GString *ret = malloc(sizeof(GString));
 	ret->len = 0;
 	ret->str = malloc(size);
-	ret->allocated_len = 0;
+	ret->allocated_len = size;
 	return ret;
 }
 

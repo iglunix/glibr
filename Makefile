@@ -26,8 +26,8 @@ clean:
 	rm *.o 2>/dev/null || exit 0
 	rm *.so 2>/dev/null || exit 0
 
-libglib.so: gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o gmem.o gthread.o
-	$(CC) $(LDFLAGS) -shared -o libglib.so gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o gmem.o gthread.o
+libglib.so: gstring.o gmessages.o glist.o gobject.o gtype.o gboxed.o gmem.o gthread.o gslist.o
+	$(CC) $(LDFLAGS) -shared -o libglib.so gstring.o gmessages.o glist.o gslist.o gobject.o gtype.o gboxed.o gmem.o gthread.o
 
 
 ########
@@ -42,6 +42,9 @@ gmessages.o: include/glib/gmessages.h include/glib/gtypes.h glib/gmessages.c
 
 glist.o: include/glib/glist.h include/glib/gtypes.h glib/glist.c
 	$(CC) -Iinclude/ -fPIC -c $(CFLAGS) -o glist.o glib/glist.c
+
+gslist.o: include/glib/gslist.h include/glib/gtypes.h glib/gslist.c
+	$(CC) -Iinclude/ -fPIC -c $(CFLAGS) -o gslist.o glib/gslist.c
 
 gmem.o: include/glib/gmem.h include/glib/gtypes.h glib/gmem.c
 	$(CC) -Iinclude/ -fPIC -c $(CFLAGS) -o gmem.o glib/gmem.c

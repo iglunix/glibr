@@ -2,6 +2,7 @@
 #define __G_TYPES_H__
 
 #include <glibconfig.h>
+#include <glib/gunicode.h>
 
 typedef float gfloat;
 typedef double gdouble;
@@ -21,5 +22,7 @@ typedef unsigned long gsize;
 typedef signed long gssize;
 typedef void* gpointer;
 typedef void const* gconstpointer;
+
+typedef void (*GDestroyNotify)(gpointer);
 
 #endif

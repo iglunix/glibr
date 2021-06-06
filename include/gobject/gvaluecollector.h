@@ -1,5 +1,5 @@
-#define __G_VALUE_COLLECTOR_H__
 #ifndef __G_VALUE_COLLECTOR_H__
+#define __G_VALUE_COLLECTOR_H__
 
 typedef union GTypeCValue {
 	gint v_int;
