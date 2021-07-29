@@ -29,4 +29,6 @@
 #define G_DEPRECATED_FOR(f)
 #define G_GNUC_PURE
 
+#define G_GNUC_PRINTF(f,a)
+
 #endif
