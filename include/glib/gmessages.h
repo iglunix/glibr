@@ -3,4 +3,4 @@
 
 void g_print(gchar const *fmt, ...);
 
-#define g_debug(fmt, ...) fprintf(stderr, ##__VA_ARGS__)
+#define g_debug(fmt, ...) fprintf(stderr, fmt, ##__VA_ARGS__)
