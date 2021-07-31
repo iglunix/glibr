@@ -1,8 +1,10 @@
 #ifndef __G_MEM_H__
 #define __G_MEM_H__
 
+#include <stdlib.h>
 #include <glib/gtypes.h>
 
-void g_free(gpointer);
+#define g_free(x) free((void *) x)
+#define g_malloc(x) (gpointer) malloc((size_t) x)
 
 #endif
