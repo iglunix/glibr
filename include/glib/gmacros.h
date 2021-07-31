@@ -31,4 +31,10 @@
 
 #define G_GNUC_PRINTF(f,a)
 
+/*
+ * This is meant to hint the compiler
+ * for optimisation. We do not do such things.
+ */
+#define G_UNLIKELY(e)
+
 #endif
